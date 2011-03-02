@@ -36,7 +36,7 @@ int main()
          if (c % b == 0) output << "1 " << c / b << '\n';
          else output << "<none>\n";
       }
-      else if (B == 0)
+      else if (b == 0)
       {
          if (c % a == 0) output << c / a << " 1\n";
          else output << "<none>\n";
