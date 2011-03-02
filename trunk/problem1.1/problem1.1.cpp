@@ -1,6 +1,6 @@
 #include <fstream>
 
-#define DIRECTIONS 4
+const int DIRECTIONS = 4;
 
 void show_spiral(int size, int x, int y, std::ofstream& out)
 {
