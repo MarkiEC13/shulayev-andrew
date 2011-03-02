@@ -32,7 +32,7 @@ int main()
    }
    
    double ans = get_area(x, y);
-   output << std::setprecision(6) << ans << '\n';
+   output << std::fixed << std::setprecision(8) << ans << '\n';
    
    return 0;
 }
