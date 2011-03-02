@@ -29,12 +29,12 @@ big::big()
 big::big(std::string s)
 {
    data.resize(s.length());
-   int i = 0;
+   size_t i = 0;
    size = 0;
    
    while (i < s.length() && s[i] == '0') i++;
    
-   while ((int)s.length() - size - 1 >= i)
+   while ((int)s.length() - size - 1 >= (int)i)
    {
       data[size] = s[s.length() - size - 1] - '0';
       size++;
