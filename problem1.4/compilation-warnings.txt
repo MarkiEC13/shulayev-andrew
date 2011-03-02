@@ -1,0 +1,4 @@
+x:\evaluator\export\problem1.4\problem1.4.cpp(35): warning C4018: '<' : signed/unsigned mismatch [X:\evaluator\export\problem1.4\problem1.4.vcxproj]
+
+[Generated at March 2, 2011 1:35:55 PM GMT+03:00]
+
