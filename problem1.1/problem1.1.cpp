@@ -23,7 +23,7 @@ void show_spiral(int size, int x, int y, std::ofstream& out)
       curr_point = 0;
       
       if (curr_direction == DIRECTIONS)
-	  {
+      {
          curr_direction = 0;
       }
       
@@ -33,7 +33,7 @@ void show_spiral(int size, int x, int y, std::ofstream& out)
          increase_next = false;
       }
       else
-	  {
+      {
          increase_next = true;
       }
    }
