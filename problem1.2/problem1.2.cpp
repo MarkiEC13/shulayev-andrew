@@ -1,22 +1,18 @@
-// problem_2.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
+#include <fstream>
+#include <vector>
+#include <iomanip>
+#include <cmath>
 
 double get_area(std::vector< double >& x, std::vector< double >& y)
 {
    double or_area = 0.0;
+   int n = x.size();
+   if (n == 0) return 0.0;
    
-   x.push_back(x[0]);
-   y.push_back(y[0]);
-   
-   for (int i = 0; i < x.size() - 1; i++)
+   for (int i = 0; i < x.size(); i++)
    {
-      or_area += x[i + 1] * y[i] - x[i] * y[i + 1];
+      or_area += x[(i + 1) % n] * y[i % n] - x[i % n] * y[(i + 1) % n];
    }
-   
-   x.pop_back();
-   y.pop_back();
    
    return fabs(or_area * 0.5);
 }
@@ -36,7 +32,7 @@ int main()
    }
    
    double ans = get_area(x, y);
-   output << std::setprecision(6) << ans << std::endl;
+   output << std::setprecision(6) << ans << '\n';
    
    return 0;
 }

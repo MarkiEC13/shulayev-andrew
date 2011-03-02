@@ -1,7 +1,4 @@
-// problem_1.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
+#include <fstream>
 
 #define DIRECTIONS 4
 
@@ -17,7 +14,7 @@ void show_spiral(int size, int x, int y, std::ofstream& out)
    
    for (int i = 0; i < size; i++)
    {
-      out << x << ' ' << y << std::endl;
+      out << x << ' ' << y << '\n';
       
       x += dx[curr_direction] * curr_size;
       y += dy[curr_direction] * curr_size;
