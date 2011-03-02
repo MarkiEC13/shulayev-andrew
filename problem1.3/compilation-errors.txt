@@ -1,0 +1,4 @@
+x:\evaluator\export\problem1.3\problem1.3.cpp(39): error C2065: 'B' : undeclared identifier [X:\evaluator\export\problem1.3\problem1.3.vcxproj]
+
+[Generated at March 2, 2011 1:35:32 PM GMT+03:00]
+
