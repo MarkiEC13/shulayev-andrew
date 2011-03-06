@@ -3,18 +3,21 @@
 #include <iomanip>
 #include <cmath>
 
-double get_area(std::vector< double >& x, std::vector< double >& y)
+double get_area(const std::vector< double >& x, const std::vector< double >& y)
 {
-   double or_area = 0.0;
-   int n = x.size();
-   if (n == 0) return 0.0;
-   
-   for (size_t i = 0; i < x.size(); i++)
+   double area = 0.0;
+   size_t n = x.size();
+   if (n == 0)
    {
-      or_area += x[(i + 1) % n] * y[i % n] - x[i % n] * y[(i + 1) % n];
+      return 0;
    }
    
-   return fabs(or_area * 0.5);
+   for (size_t i = 0; i < n; i++)
+   {
+      area += x[(i + 1) % n] * y[i % n] - x[i % n] * y[(i + 1) % n];
+   }
+   
+   return fabs(area * 0.5);
 }
 
 int main()
@@ -23,12 +26,12 @@ int main()
    std::ofstream output("out.txt");
    
    std::vector< double > x, y;
-   double cx, cy;
+   double coord_x, coord_y;
    
-   while (input >> cx >> cy)
+   while (input >> coord_x >> coord_y)
    {
-      x.push_back(cx);
-      y.push_back(cy);
+      x.push_back(coord_x);
+      y.push_back(coord_y);
    }
    
    double ans = get_area(x, y);
