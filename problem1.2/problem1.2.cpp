@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <cmath>
 
-double get_area(const std::vector< double >& x, const std::vector< double >& y)
+double get_area(const std::vector<double>& x, const std::vector<double>& y)
 {
    double area = 0.0;
    size_t n = x.size();
@@ -25,7 +25,7 @@ int main()
    std::ifstream input("in.txt");
    std::ofstream output("out.txt");
    
-   std::vector< double > x, y;
+   std::vector<double> x, y;
    double coord_x, coord_y;
    
    while (input >> coord_x >> coord_y)
