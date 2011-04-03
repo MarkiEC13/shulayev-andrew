@@ -2,57 +2,56 @@
 
 typedef long long int64;
 
-int64 gcd_extended(int64 a, int64 b, int64& x, int64& y)
+// инвариант: ax + by = gcd(a, b)
+int gcd_extended(int a, int b, int64& x, int64& y)
 {
-   if (a == 0)
+   if (b == 0)
    {
-      x = 0; y = 1;
-      return b;
+      x = 1;
+      y = 0;
+
+      return a;
    }
-   int64 x1, y1;
-   int64 d = gcd_extended(b % a, a, x1, y1);
-   x = y1 - (b / a) * x1;
-   y = x1;
-   
-   return d;
+
+   int gcd = gcd_extended(b, a % b, x, y);
+   // bx + (a % b)y = gcd(a, b)
+
+   int64 temp = x;
+   x = y - (b / a) * x;
+   y = temp;
+
+   return gcd;
 }
 
 int main()
 {
-   std::ifstream input("in.txt");
-   std::ofstream output("out.txt");
-   
-   int64 a, b, c;
-   int64 x, y, g;
-   while (input >> a >> b >> c)
+   std::ifstream in("in.txt");
+   std::ofstream out("out.txt");
+
+   int a, b, c, gcd;
+   int64 x, y;
+   while (in >> a >> b >> c)
    {
       if (a == 0 && b == 0)
       {
-         if (c == 0) output << "1 1\n";
-         else output << "<none>\n";
+         if (c == 0) out << "1 1\n";
+         else out << "<none>\n";
       }
-      else if (a == 0)
-      {
-         if (c % b == 0) output << "1 " << c / b << '\n';
-         else output << "<none>\n";
-      }
-      else if (b == 0)
-      {
-         if (c % a == 0) output << c / a << " 1\n";
-         else output << "<none>\n";
-      }
+
       else
       {
-         g = gcd_extended(a, b, x, y);
-         if (a % g != 0) output << "<none>\n";
+         gcd = gcd_extended(a, b, x, y);
+
+         if (c % gcd == 0)
+         {
+            out << int64(x) * (c / gcd) << ' ' << int64(y) * (c / gcd) << '\n';
+         }
          else
          {
-            x *= c / g;
-            y *= c / g;
-            output << x << ' ' << y << '\n';
+            out << "<none>\n";
          }
       }
    }
-   
+
    return 0;
 }
