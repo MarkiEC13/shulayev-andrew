@@ -34,8 +34,14 @@ int main()
    {
       if (a == 0 && b == 0)
       {
-         if (c == 0) out << "1 1\n";
-         else out << "<none>\n";
+         if (c == 0) 
+         {
+            out << "1 1\n";
+         }
+         else
+         {
+            out << "<none>\n";
+         }
       }
 
       else
@@ -44,7 +50,7 @@ int main()
 
          if (c % gcd == 0)
          {
-            out << int64(x) * (c / gcd) << ' ' << int64(y) * (c / gcd) << '\n';
+            out << x * (c / gcd) << ' ' << y * (c / gcd) << '\n';
          }
          else
          {
