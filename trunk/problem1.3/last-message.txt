@@ -1,4 +1,4 @@
-Wrong Answer on test 01
+CRASH on test 02
 
-[Generated at March 2, 2011 1:56:26 PM GMT+03:00]
+[Generated at April 3, 2011 3:01:55 PM GMT+03:00]
 
