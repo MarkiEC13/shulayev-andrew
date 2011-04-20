@@ -5,16 +5,15 @@ typedef long long int64;
 // инвариант: ax + by = gcd(a, b)
 int gcd_extended(int a, int b, int64& x, int64& y)
 {
-   if (b == 0)
+   if (a == 0)
    {
-      x = 1;
-      y = 0;
+      x = 0;
+      y = 1;
 
-      return a;
+      return b;
    }
 
-   int gcd = gcd_extended(b, a % b, x, y);
-   // bx + (a % b)y = gcd(a, b)
+   int gcd = gcd_extended(b % a, a, x, y);
 
    int64 temp = x;
    x = y - (b / a) * x;
