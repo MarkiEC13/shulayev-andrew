@@ -1,4 +1,4 @@
-TIME_LIMIT_EXCEEDED on test 09
+Accepted
 
-[Generated at April 22, 2011 7:32:26 PM GMT+03:00]
+[Generated at April 22, 2011 7:43:55 PM GMT+03:00]
 
