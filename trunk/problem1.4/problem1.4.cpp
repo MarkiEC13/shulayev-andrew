@@ -1,4 +1,3 @@
-#include <iostream>
 #include "bignum.h"
 
 int main()
@@ -10,7 +9,6 @@ int main()
 
    while (in >> x >> y)
    {
-      std::cerr << x << '\n' << y << '\n';
       if (y.is_zero())
       {
          out << "<error>\n\n\n";
