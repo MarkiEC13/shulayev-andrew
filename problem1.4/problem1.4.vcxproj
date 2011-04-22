@@ -61,7 +61,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bignum.cpp" />
     <ClCompile Include="problem1.4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bignum.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
