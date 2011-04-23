@@ -28,15 +28,25 @@ public:
    bool operator!=(const big_int&) const;
    bool operator<(const big_int&) const;
    bool operator>(const big_int&) const;
+   bool is_zero() const;
 
    big_int& operator=(const big_int&);
    void swap(big_int&);
+
+   big_int operator-() const;
+   big_int& operator+=(const big_int&);
+   big_int& operator-=(const big_int&);
+   big_int& operator*=(const big_int&);
+   big_int operator+(const big_int&) const;
+   big_int operator-(const big_int&) const;
+   big_int operator*(const big_int&) const;
 
 private:
    bool is_negative;
    container_t digits;
 
-   int compare_to(const big_int&) const;
+   int compare_to(const big_int&, size_t) const;
+   void normalize();
 };
 
 #endif
