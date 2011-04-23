@@ -1,7 +1,12 @@
 #ifndef BIG_INT_H
 #define BIG_INT_H
 
+#include <vector>
+#include <iomanip>
+#include <fstream>
 #include <algorithm>
+
+#include "container_t.h"
 
 typedef long long int64;
 
@@ -14,12 +19,24 @@ public:
    big_int();
    big_int(int);
    big_int(int64);
-   friend std::istream& operator>>(std::istream&, bignum&);
-   friend std::ostream& operator<<(std::ostream&, const bignum&);
+   friend std::istream& operator>>(std::istream&, big_int&);
+   friend std::ostream& operator<<(std::ostream&, const big_int&);
+
+   bool operator==(const big_int&) const;
+   bool operator<=(const big_int&) const;
+   bool operator>=(const big_int&) const;
+   bool operator!=(const big_int&) const;
+   bool operator<(const big_int&) const;
+   bool operator>(const big_int&) const;
+
+   big_int& operator=(const big_int&);
+   void swap(big_int&);
 
 private:
    bool is_negative;
    container_t digits;
-}
+
+   int compare_to(const big_int&) const;
+};
 
 #endif
