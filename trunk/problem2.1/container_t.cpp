@@ -13,13 +13,13 @@ container_t::container_t(const container_t& other)
    length = other.length;
    capacity = other.capacity;
 
-   if (length == 1)
+   if (capacity == 1)
    {
       digit = other.digit;
    }
    else
    {
-      digits = new size_t[capacity];
+      digits = new int[capacity];
       for (size_t i = 0; i < capacity; i++)
       {
          digits[i] = other.digits[i];
@@ -42,7 +42,7 @@ void container_t::ensure_capacity(size_t size)
       new_capacity *= 2;
    }
 
-   size_t* new_digits = new size_t[new_capacity];
+   int* new_digits = new int[new_capacity];
 
    if (capacity == 1)
    {
@@ -77,7 +77,7 @@ void container_t::push_back(size_t item)
    length++;
 }
 
-size_t& container_t::operator[](size_t index)
+int& container_t::operator[](size_t index)
 {
    if (capacity == 1)
    {
@@ -89,7 +89,7 @@ size_t& container_t::operator[](size_t index)
    }
 }
 
-size_t container_t::operator[](size_t index) const
+int container_t::operator[](size_t index) const
 {
    if (capacity == 1)
    {
@@ -116,7 +116,7 @@ container_t& container_t::operator=(const container_t& other)
    }
    else
    {
-      digits = new size_t[capacity];
+      digits = new int[capacity];
       for (size_t i = 0; i < capacity; i++)
       {
          digits[i] = other.digits[i];
@@ -152,4 +152,10 @@ container_t::~container_t()
 size_t container_t::size() const
 {
    return length;
+}
+
+void container_t::shrink(size_t size)
+{
+   assert(size <= length);
+   length = size;
 }

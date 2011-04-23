@@ -34,6 +34,12 @@ big_int::big_int(int data)
 
 std::istream& operator>>(std::istream& in, big_int& big)
 {
+   while (in.peek() == ' ' || in.peek() == '\n' || in.peek() == '\t')
+   {
+      in.get();
+   }
+
+   big.is_negative = false;
    if (in.peek() == '-')
    {
       in.get();
@@ -113,18 +119,18 @@ std::ostream& operator<<(std::ostream& out, const big_int& big)
 
 // comparison operators
 
-int big_int::compare_to(const big_int& other) const
+int big_int::compare_to(const big_int& other, size_t shift = 0) const
 {
-   if (digits.size() != other.digits.size())
+   if (digits.size() - shift != other.digits.size())
    {
-      return digits.size() - other.digits.size();
+      return digits.size() - shift - other.digits.size();
    }
 
-   for (int i = digits.size() - 1; i >= 0; i--)
+   for (int i = other.digits.size() - 1; i >= 0; i--)
    {
-      if (digits[i] != other.digits[i])
+      if (digits[shift + i] != other.digits[i])
       {
-         return digits[i] - other.digits[i];
+         return digits[shift + i] - other.digits[i];
       }
    }
 
@@ -161,6 +167,11 @@ bool big_int::operator>(const big_int& other) const
    return (compare_to(other) > 0);
 }
 
+bool big_int::is_zero() const
+{
+   return (digits.size() == 1 && digits[0] == 0);
+}
+
 // assignment operator
 
 big_int& big_int::operator=(const big_int& other)
@@ -177,4 +188,194 @@ void big_int::swap(big_int& other)
 {
    digits.swap(other.digits);
    std::swap(is_negative, other.is_negative);
+}
+
+// additive inverse
+
+big_int big_int::operator-() const
+{
+   big_int result = *this;
+   
+   if (!result.is_zero())
+   {
+      result.is_negative = !result.is_negative;
+   }
+   return result;
+}
+
+// arithmetic routines
+
+big_int& big_int::operator+=(const big_int& other)
+{
+   if (is_negative != other.is_negative)
+   {
+      return *this -= -other;
+   }
+
+   int carry = 0;
+
+   size_t i;
+   for (i = 0; i < other.digits.size(); i++)
+   {
+      if (i == digits.size())
+      {
+         digits.push_back(0);
+      }
+
+      digits[i] += carry + other.digits[i];
+      carry = digits[i] / BASE;
+      digits[i] %= BASE;
+   }
+
+   while (carry > 0)
+   {
+      if (i == digits.size())
+      {
+         digits.push_back(0);
+      }
+
+      digits[i] += carry;
+      carry = digits[i] / BASE;
+      digits[i] %= BASE;
+
+      i++;
+   }
+
+   return *this;
+}
+
+big_int big_int::operator+(const big_int& other) const
+{
+   return big_int(*this) += other;
+}
+
+big_int& big_int::operator-=(const big_int& other)
+{
+   if (is_negative != other.is_negative)
+   {
+      return *this += -other;
+   }
+
+   int carry = 0;
+
+   size_t i;
+   for (i = 0; i < other.digits.size(); i++)
+   {
+      if (i == digits.size())
+      {
+         digits.push_back(0);
+      }
+
+      digits[i] -= carry + other.digits[i];
+
+      carry = 0;
+      if (digits[i] < 0)
+      {
+         digits[i] += BASE;
+         carry = 1;
+      }
+   }
+
+   while (i < digits.size() && carry != 0)
+   {
+      digits[i] -= carry;
+      
+      carry = 0;
+      if (digits[i] < 0)
+      {
+         digits[i] += BASE;
+         carry = 1;
+      }
+
+      i++;
+   }
+
+   if (carry != 0)
+   {
+      is_negative = !is_negative;
+
+      i = 0;
+      while (i < digits.size() && digits[i] == 0)
+      {
+         i++;
+      }
+
+      digits[i] = BASE - digits[i];
+      i++;
+
+      while (i < digits.size())
+      {
+         digits[i] = BASE - digits[i] - 1;
+         i++;
+      }
+   }
+
+   normalize();
+
+   return *this;
+}
+
+big_int big_int::operator-(const big_int& other) const
+{
+   return big_int(*this) -= other;
+}
+
+big_int big_int::operator*(const big_int& other) const
+{
+   container_t result;
+
+   int64 carry = 0;
+   for (size_t i = 0; i < digits.size(); i++)
+   {
+      size_t j;
+      for (j = 0; j < other.digits.size(); j++)
+      {
+         if (i + j == result.size())
+         {
+            result.push_back(0);
+         }
+         int64 temp = int64(digits[i]) * int64(other.digits[j]) + carry + int64(result[i + j]);
+         result[i + j] = temp % BASE;
+         carry = temp / BASE;
+      }
+      while (carry > 0)
+      {
+         if (i + j == result.size())
+         {
+            result.push_back(0);
+         }
+         int64 temp = carry + int64(result[i + j]);
+         result[i + j] = temp % BASE;
+         carry = temp / BASE;
+
+         j++;
+      }
+   }
+
+   big_int result_num;
+   result_num.is_negative = is_negative ^ other.is_negative;
+   result_num.digits = result;
+
+   result_num.normalize();
+
+   return result_num;
+}
+
+big_int& big_int::operator*=(const big_int& other)
+{
+   return *this = *this * other;
+}
+
+// service routines
+
+void big_int::normalize()
+{
+   int new_length = digits.size();
+   while (digits[new_length - 1] == 0 && new_length > 1)
+   {
+      new_length--;
+   }
+   digits.shrink(new_length);
+
+   if (is_zero()) is_negative = false;
 }
