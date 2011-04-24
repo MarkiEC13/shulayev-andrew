@@ -366,6 +366,148 @@ big_int& big_int::operator*=(const big_int& other)
    return *this = *this * other;
 }
 
+// we are so close to implement division
+// some auxiliary methods first
+
+void big_int::inplace_subtract(const big_int& other, size_t shift = 0)
+{
+   int carry = 0;
+
+   size_t i;
+   for (i = 0; i < other.digits.size(); i++)
+   {
+      digits[shift + i] -= other.digits[i] + carry;
+      carry = 0;
+
+      if (digits[shift + i] < 0)
+      {
+         digits[shift + i] += BASE;
+         carry = 1;
+      }
+   }
+
+   while (shift + i < digits.size() && carry != 0)
+   {
+      digits[shift + i] -= carry;
+      carry = 0;
+
+      if (digits[shift + i] < 0)
+      {
+         digits[shift + i] += BASE;
+         carry = 1;
+      }
+   }
+}
+
+big_int big_int::operator*(int mult) const
+{
+   if (mult == 0) return big_int(0);
+
+   big_int result = *this;
+
+   if (mult < 0)
+   {
+      result.is_negative = !result.is_negative;
+      mult = -mult;
+   }
+
+   int64 carry = 0;
+   for (size_t i = 0; i < digits.size(); i++)
+   {
+      carry += int64(digits[i]) * int64(mult);
+
+      result.digits[i] = carry % BASE;
+      carry /= BASE;
+   }
+
+   while (carry > 0)
+   {
+      result.digits.push_back(carry % BASE);
+      carry /= BASE;
+   }
+
+   return result;
+}
+
+big_int big_int::inplace_remainder(const big_int& other)
+{
+   int shift = digits.size() - other.digits.size();
+   container_t result_digits;
+   bool result_is_negative = is_negative ^ other.is_negative;
+
+   while (shift >= 0)
+   {
+      int left = 0, right = BASE;
+      while (left + 1 < right)
+      {
+         int middle = (left + right) / 2;
+         if (this->compare_to(other * middle, shift) >= 0)
+         {
+            left = middle;
+         }
+         else
+         {
+            right = middle;
+         }
+      }
+
+      if (left != 0 || result_digits.size() > 0)
+      {
+         result_digits.push_back(left);
+         this->inplace_subtract(other * left, shift);
+
+         normalize();
+      }
+
+      shift--;
+   }
+
+   if (result_digits.size() == 0)
+   {
+      result_digits.push_back(0);
+      result_is_negative = false;
+   }
+
+   result_digits.reverse();
+
+   big_int result;
+   result.digits = result_digits;
+   result.is_negative = result_is_negative;
+
+   return result;
+}
+
+big_int& big_int::operator%=(const big_int& other)
+{
+   this->inplace_remainder(other);
+   return *this;
+}
+
+big_int big_int::operator%(const big_int& other) const
+{
+   big_int result(*this);
+   return result %= other;
+}
+
+big_int big_int::operator/(const big_int& other) const
+{
+   big_int temp(*this);
+   return temp.inplace_remainder(other);
+}
+
+big_int& big_int::operator/=(const big_int& other)
+{
+   return *this = *this / other;
+}
+
+std::pair<big_int, big_int> big_int::divide_with_remainder(const big_int& other) const
+{
+   big_int second(*this);
+   big_int first(second.inplace_remainder(other));
+
+   return std::make_pair(first, second);
+}
+
 // service routines
 
 void big_int::normalize()

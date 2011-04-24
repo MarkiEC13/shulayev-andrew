@@ -37,13 +37,22 @@ public:
    big_int& operator+=(const big_int&);
    big_int& operator-=(const big_int&);
    big_int& operator*=(const big_int&);
+   big_int& operator/=(const big_int&);
+   big_int& operator%=(const big_int&);
    big_int operator+(const big_int&) const;
    big_int operator-(const big_int&) const;
    big_int operator*(const big_int&) const;
+   big_int operator/(const big_int&) const;
+   big_int operator%(const big_int&) const;
+   std::pair<big_int, big_int> divide_with_remainder(const big_int&) const;
 
 private:
    bool is_negative;
    container_t digits;
+
+   void inplace_subtract(const big_int&, size_t);
+   big_int operator*(int) const;
+   big_int inplace_remainder(const big_int&);
 
    int compare_to(const big_int&, size_t) const;
    void normalize();
