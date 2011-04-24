@@ -1,4 +1,4 @@
-Some tests were failed.
+Compilation error
 
-[Generated at April 24, 2011 2:28:43 PM GMT+03:00]
+[Generated at April 24, 2011 2:34:21 PM GMT+03:00]
 
