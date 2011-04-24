@@ -1,14 +1,4 @@
-x:\evaluator\export\problem2.1\big_int_test.cpp(100): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(100): error C2780: 'bool boost::test_tools::tt_detail::check_frwd(Pred,const boost::unit_test::lazy_ostream &,boost::test_tools::const_string,size_t,boost::test_tools::tt_detail::tool_level,boost::test_tools::tt_detail::check_type,const Arg0 &,const char *,const Arg1 &,const char *,const Arg2 &,const char *,const Arg3 &,const char *,const Arg4 &,const char *)' : expects 16 arguments - 10 provided [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(100): error C2780: 'bool boost::test_tools::tt_detail::check_frwd(Pred,const boost::unit_test::lazy_ostream &,boost::test_tools::const_string,size_t,boost::test_tools::tt_detail::tool_level,boost::test_tools::tt_detail::check_type,const Arg0 &,const char *,const Arg1 &,const char *,const Arg2 &,const char *,const Arg3 &,const char *)' : expects 14 arguments - 10 provided [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(100): error C2780: 'bool boost::test_tools::tt_detail::check_frwd(Pred,const boost::unit_test::lazy_ostream &,boost::test_tools::const_string,size_t,boost::test_tools::tt_detail::tool_level,boost::test_tools::tt_detail::check_type,const Arg0 &,const char *,const Arg1 &,const char *,const Arg2 &,const char *)' : expects 12 arguments - 10 provided [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(100): error C2780: 'bool boost::test_tools::tt_detail::check_frwd(Pred,const boost::unit_test::lazy_ostream &,boost::test_tools::const_string,size_t,boost::test_tools::tt_detail::tool_level,boost::test_tools::tt_detail::check_type,const Arg0 &,const char *)' : expects 8 arguments - 10 provided [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(147): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(152): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(179): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(180): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(181): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
-x:\evaluator\export\problem2.1\big_int_test.cpp(181): error C2665: 'abs' : none of the 6 overloads could convert all the argument types [X:\evaluator\export\problem2.1\build.xml]
+x:\evaluator\export\problem2.1\big_int_test.cpp(319): error C2146: syntax error : missing ';' before identifier 'test_int' [X:\evaluator\export\problem2.1\build.xml]
 
-[Generated at April 24, 2011 11:43:02 AM GMT+03:00]
+[Generated at April 24, 2011 2:34:20 PM GMT+03:00]
 
