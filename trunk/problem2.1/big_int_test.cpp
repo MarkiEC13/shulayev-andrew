@@ -309,7 +309,13 @@ BOOST_AUTO_TEST_CASE( io_test )
         string string_representation;
         for (int i = 0; i < length; ++i) {
             test_int *= big_int(10);
-            int digit = digit_generator();
+            int digit;
+
+            do {
+                digit = digit_generator();
+            }
+            while ((i == 0) && (digit == 0))
+
             test_int += big_int(digit);
             string_representation += static_cast<char>(digit + '0');
             BOOST_CHECK_EQUAL(lexical_cast<string>(test_int), string_representation);
