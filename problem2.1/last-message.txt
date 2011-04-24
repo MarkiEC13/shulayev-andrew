@@ -1,4 +1,4 @@
-Tests failed: *** 36 failures detected in test suite "big_int test"
+Some tests were failed.
 
-[Generated at April 24, 2011 2:23:07 PM GMT+03:00]
+[Generated at April 24, 2011 2:28:43 PM GMT+03:00]
 
