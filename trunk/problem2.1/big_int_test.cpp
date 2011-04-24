@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE( io_test )
             do {
                 digit = digit_generator();
             }
-            while ((i == 0) && (digit == 0))
+            while ((i == 0) && (digit == 0));
 
             test_int += big_int(digit);
             string_representation += static_cast<char>(digit + '0');
