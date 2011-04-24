@@ -10,7 +10,7 @@ big_int::big_int()
 
 big_int::big_int(int64 data)
 {
-   is_negative = (data < 0);
+   is_negative = (data < 0ll);
    data = abs(data);
 
    while (data > 0)
@@ -25,9 +25,21 @@ big_int::big_int(int64 data)
    }
 }
 
-big_int::big_int(int data)
+big_int::big_int(int small_data)
 {
-   big_int(int64(data));
+   is_negative = (small_data < 0);
+   int64 data = abs(int64(small_data));
+
+   while (data > 0)
+   {
+      digits.push_back(data % BASE);
+      data /= BASE;
+   }
+
+   if (digits.size() == 0)
+   {
+      digits.push_back(0);
+   }
 }
 
 // input/output routines
@@ -51,7 +63,7 @@ std::istream& operator>>(std::istream& in, big_int& big)
    {
       if (in.peek() != '0' || !buffer.empty())
       {
-         buffer.push_back(in.get());
+         buffer.push_back(char(in.get()));
       }
       else
       {
@@ -70,7 +82,7 @@ std::istream& operator>>(std::istream& in, big_int& big)
    {
       int read_digits = 0, current = 0;
 
-      int badness = buffer.size() % LOG10_BASE;
+      size_t badness = buffer.size() % LOG10_BASE;
       int size = buffer.size() / LOG10_BASE + 1;
       if (badness == 0) size--;
 
@@ -119,7 +131,7 @@ std::ostream& operator<<(std::ostream& out, const big_int& big)
 
 // comparison operators
 
-int big_int::compare_to(const big_int& other, size_t shift = 0) const
+int big_int::digits_compare(const big_int& other, size_t shift = 0) const
 {
    if (digits.size() - shift != other.digits.size())
    {
@@ -135,6 +147,26 @@ int big_int::compare_to(const big_int& other, size_t shift = 0) const
    }
 
    return 0;
+}
+
+int big_int::compare_to(const big_int& other) const
+{
+   if (is_negative && !other.is_negative)
+   {
+      return -1;
+   }
+   else if (!is_negative && other.is_negative)
+   {
+      return 1;
+   }
+   else if (is_negative)
+   {
+      return -digits_compare(other);
+   }
+   else
+   {
+      return digits_compare(other);
+   }
 }
 
 bool big_int::operator==(const big_int& other) const
@@ -219,6 +251,8 @@ big_int abs(const big_int& arg)
 
 big_int& big_int::operator+=(const big_int& other)
 {
+   if (other.is_zero()) return *this;
+
    if (is_negative != other.is_negative)
    {
       return *this -= -other;
@@ -263,6 +297,8 @@ big_int big_int::operator+(const big_int& other) const
 
 big_int& big_int::operator-=(const big_int& other)
 {
+   if (other.is_zero()) return *this;
+
    if (is_negative != other.is_negative)
    {
       return *this += -other;
@@ -453,7 +489,7 @@ big_int big_int::inplace_remainder(const big_int& other)
       while (left + 1 < right)
       {
          int middle = (left + right) / 2;
-         if (this->compare_to(other * middle, shift) >= 0)
+         if (this->digits_compare(other * middle, shift) >= 0)
          {
             left = middle;
          }

@@ -56,7 +56,8 @@ private:
    big_int operator*(int) const;
    big_int inplace_remainder(const big_int&);
 
-   int compare_to(const big_int&, size_t) const;
+   int digits_compare(const big_int&, size_t) const;
+   int compare_to(const big_int&) const;
    void normalize();
 };
 

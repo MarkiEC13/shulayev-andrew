@@ -130,7 +130,7 @@ void container_t::swap(container_t& other)
 {
    std::swap(length, other.length);
    std::swap(capacity, other.capacity);
-   std::swap(digit, digit);
+   std::swap(digit, other.digit);
 }
 
 void container_t::reverse()
