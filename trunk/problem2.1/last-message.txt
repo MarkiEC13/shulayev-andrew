@@ -1,4 +1,4 @@
-CRASH
+Tests failed: *** 36 failures detected in test suite "big_int test"
 
-[Generated at April 24, 2011 12:03:00 PM GMT+03:00]
+[Generated at April 24, 2011 2:15:01 PM GMT+03:00]
 
