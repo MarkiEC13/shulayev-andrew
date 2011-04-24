@@ -205,6 +205,18 @@ big_int big_int::operator-() const
 
 // arithmetic routines
 
+big_int abs(const big_int& arg)
+{
+   big_int result = arg;
+
+   if (!result.is_zero())
+   {
+      result.is_negative = false;
+   }
+
+   return result;
+}
+
 big_int& big_int::operator+=(const big_int& other)
 {
    if (is_negative != other.is_negative)

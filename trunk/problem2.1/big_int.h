@@ -46,6 +46,8 @@ public:
    big_int operator%(const big_int&) const;
    std::pair<big_int, big_int> divide_with_remainder(const big_int&) const;
 
+   friend big_int abs(const big_int&);
+
 private:
    bool is_negative;
    container_t digits;
