@@ -29,7 +29,6 @@ private:
    void subtract(const bignum&, size_t);
    void normalize();
    std::vector<int> digits;
-   int length;
 };
 
 #endif

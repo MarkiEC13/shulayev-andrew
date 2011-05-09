@@ -1,5 +1,25 @@
 #include "bignum.h"
 
+namespace
+{
+   int digit_length(int digit)
+   {
+      if (digit == 0)
+      {
+         return 1;
+      }
+
+      int result = 0;
+      while (digit != 0)
+      {
+         result++;
+         digit /= 10;
+      }
+
+      return result;
+   }
+}
+
 // constructors
 
 bignum::bignum(int64 number)
@@ -41,23 +61,6 @@ void bignum::normalize()
 }
 
 // input/output routines
-
-int digit_length(int digit)
-{
-   if (digit == 0)
-   {
-      return 1;
-   }
-
-   int result = 0;
-   while (digit != 0)
-   {
-      result++;
-      digit /= 10;
-   }
-
-   return result;
-}
 
 std::istream& operator>>(std::istream& in, bignum& big)
 {
