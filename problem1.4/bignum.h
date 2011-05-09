@@ -27,6 +27,7 @@ public:
 private:
    int compare_to(const bignum&, size_t) const;
    void subtract(const bignum&, size_t);
+   void normalize();
    std::vector<int> digits;
    int length;
 };
