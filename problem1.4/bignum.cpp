@@ -20,11 +20,6 @@ bignum::bignum(int64 number)
    digits = result;
 }
 
-bignum::bignum(int number)
-{
-   bignum(int64(number));
-}
-
 bignum::bignum(const std::vector<int>& digits_vector)
    : digits(digits_vector), length(digits_vector.size())
 { }
@@ -113,12 +108,13 @@ bool bignum::is_zero() const
 
 bignum bignum::operator*(int mult) const
 {
+   assert(mult != 0);
    std::vector<int> result_digits;
 
    int64 current = 0;
-   for (size_t i = 0; i < this->length; i++)
+   for (size_t i = 0; i < length; i++)
    {
-      current += int64(this->digits[i]) * int64(mult);
+      current += int64(digits[i]) * int64(mult);
 
       result_digits.push_back(current % BASE);
       current /= BASE;
@@ -170,13 +166,12 @@ void bignum::subtract(const bignum& subtrahend, size_t shift)
    }
 }
 
-int bignum::compare_to(const bignum& other, size_t shift)
+int bignum::compare_to(const bignum& other, size_t shift) const
 {
    if (length - shift != other.length)
    {
       return length - shift - other.length;
    }
-
    for (int i = other.length - 1; i >= 0; i--)
    {
       if (digits[shift + i] != other.digits[i])
@@ -190,7 +185,7 @@ int bignum::compare_to(const bignum& other, size_t shift)
 
 std::pair<bignum, bignum> bignum::divide(const bignum& divider)
 {
-   int shift = this->length - 1;
+   int shift = length - 1;
    bignum current = *this;
    std::vector<int> result_digits;
 
