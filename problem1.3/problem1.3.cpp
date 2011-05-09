@@ -2,7 +2,7 @@
 
 typedef long long int64;
 
-// èíâàðèàíò: ax + by = gcd(a, b)
+// Ã¨Ã­Ã¢Ã Ã°Ã¨Ã Ã­Ã²: ax + by = gcd(a, b)
 int gcd_extended(int a, int b, int64& x, int64& y)
 {
    if (a == 0)
@@ -27,8 +27,7 @@ int main()
    std::ifstream in("in.txt");
    std::ofstream out("out.txt");
 
-   int a, b, c, gcd;
-   int64 x, y;
+   int a, b, c;
    while (in >> a >> b >> c)
    {
       if (a == 0 && b == 0)
@@ -42,9 +41,10 @@ int main()
             out << "<none>\n";
          }
       }
-
       else
       {
+         int gcd;
+         int64 x, y;
          gcd = gcd_extended(a, b, x, y);
 
          if (c % gcd == 0)
