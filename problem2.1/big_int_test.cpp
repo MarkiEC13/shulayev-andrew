@@ -63,6 +63,8 @@ vector<big_int> get_numbers()
     vector<big_int> numbers;
     numbers.push_back(big_int());
     numbers.push_back(big_int(1));
+    numbers.push_back(lexical_cast<big_int>("00000000000000000000312321"));
+    numbers.push_back(lexical_cast<big_int>("-0000000000000000000000312"));
     generate_n(back_inserter(numbers), TESTS_SIZE - numbers.size(), next_random_big_int);
     return numbers;
 }
