@@ -16,13 +16,29 @@ bignum::bignum(int64 number)
       result.push_back(0);
    }
 
-   length = result.size();
    digits = result;
 }
 
 bignum::bignum(const std::vector<int>& digits_vector)
-   : digits(digits_vector), length(digits_vector.size())
-{ }
+   : digits(digits_vector)
+{
+   normalize();
+}
+
+void bignum::normalize()
+{
+   int length = digits.size();
+   while (length > 0 && digits[length - 1] == 0)
+   {
+      length--;
+   }
+
+   if (length == 0)
+   {
+      length = 1;
+   }
+   digits.resize(length);
+}
 
 // input/output routines
 
@@ -46,7 +62,10 @@ int digit_length(int digit)
 std::istream& operator>>(std::istream& in, bignum& big)
 {
    std::string buffer;
-   if(!(in >> buffer)) return in;
+   if (!(in >> buffer))
+   {
+      return in;
+   }
 
    int size = buffer.length() / LOG10_BASE + 1;
    int badness = buffer.length() % LOG10_BASE;
@@ -56,7 +75,6 @@ std::istream& operator>>(std::istream& in, bignum& big)
    }
 
    big.digits.resize(size);
-   big.length = size;
 
    int current = 0, read_digits = 0, index = size - 1;
 
@@ -81,11 +99,11 @@ std::istream& operator>>(std::istream& in, bignum& big)
 std::ostream& operator<<(std::ostream& out, const bignum& big)
 {
    int zeros;
-   for (int i = big.length - 1; i >= 0; i--)
+   for (int i = big.digits.size() - 1; i >= 0; i--)
    {
       zeros = LOG10_BASE - digit_length(big.digits[i]);
       
-      if (i != big.length - 1)
+      if (i != big.digits.size() - 1)
       {
          for (int j = 0; j < zeros; j++)
          {
@@ -103,16 +121,20 @@ std::ostream& operator<<(std::ostream& out, const bignum& big)
 
 bool bignum::is_zero() const
 {
-   return (length == 1 && digits[0] == 0);
+   return (digits.size() == 1 && digits[0] == 0);
 }
 
 bignum bignum::operator*(int mult) const
 {
-   assert(mult != 0);
+   if (mult == 0)
+   {
+      return bignum();
+   }
+
    std::vector<int> result_digits;
 
    int64 current = 0;
-   for (size_t i = 0; i < length; i++)
+   for (size_t i = 0; i < digits.size(); i++)
    {
       current += int64(digits[i]) * int64(mult);
 
@@ -134,7 +156,7 @@ void bignum::subtract(const bignum& subtrahend, size_t shift)
    int carry = 0;
 
    size_t i;
-   for (i = 0; i < subtrahend.length; i++)
+   for (i = 0; i < subtrahend.digits.size(); i++)
    {
       digits[shift + i] -= subtrahend.digits[i] + carry;
       carry = 0;
@@ -146,7 +168,7 @@ void bignum::subtract(const bignum& subtrahend, size_t shift)
       }
    }
 
-   while (shift + i < length && carry == 1)
+   while (shift + i < digits.size() && carry > 0)
    {
       digits[shift + i] -= carry;
       carry = 0;
@@ -158,21 +180,16 @@ void bignum::subtract(const bignum& subtrahend, size_t shift)
       }
    }
 
-   i = length - 1;
-   while (i > 0 && digits[i] == 0)
-   {
-      length--;
-      i--;
-   }
+   normalize();
 }
 
 int bignum::compare_to(const bignum& other, size_t shift) const
 {
-   if (length - shift != other.length)
+   if (digits.size() - shift != other.digits.size())
    {
-      return length - shift - other.length;
+      return digits.size() - shift - other.digits.size();
    }
-   for (int i = other.length - 1; i >= 0; i--)
+   for (int i = other.digits.size() - 1; i >= 0; i--)
    {
       if (digits[shift + i] != other.digits[i])
       {
@@ -185,7 +202,7 @@ int bignum::compare_to(const bignum& other, size_t shift) const
 
 std::pair<bignum, bignum> bignum::divide(const bignum& divider)
 {
-   int shift = length - 1;
+   int shift = digits.size() - 1;
    bignum current = *this;
    std::vector<int> result_digits;
 
