@@ -2,7 +2,6 @@
 
 typedef long long int64;
 
-// èíâàðèàíò: ax + by = gcd(a, b)
 int gcd_extended(int a, int b, int64& x, int64& y)
 {
    if (a == 0)
@@ -43,9 +42,8 @@ int main()
       }
       else
       {
-         int gcd;
          int64 x, y;
-         gcd = gcd_extended(a, b, x, y);
+         int gcd = gcd_extended(a, b, x, y);
 
          if (c % gcd == 0)
          {
