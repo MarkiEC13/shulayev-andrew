@@ -101,10 +101,9 @@ std::istream& operator>>(std::istream& in, bignum& big)
 
 std::ostream& operator<<(std::ostream& out, const bignum& big)
 {
-   int zeros;
    for (int i = big.digits.size() - 1; i >= 0; i--)
    {
-      zeros = LOG10_BASE - digit_length(big.digits[i]);
+      int zeros = LOG10_BASE - digit_length(big.digits[i]);
       
       if (i != big.digits.size() - 1)
       {
