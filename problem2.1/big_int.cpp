@@ -46,16 +46,38 @@ big_int::big_int(int small_data)
 
 std::istream& operator>>(std::istream& in, big_int& big)
 {
-   while (in.peek() == ' ' || in.peek() == '\n' || in.peek() == '\t')
+   while (!in.eof() && isspace(in.peek()))
    {
       in.get();
    }
 
-   big.is_negative = false;
-   if (in.peek() == '-')
+   if (in.eof())
    {
+	   in.setstate(std::ios::failbit);
+	   return in;
+   }
+
+   big.is_negative = false;
+   if (in.peek() == '+' || in.peek() == '-')
+   {
+      if (in.peek() == '-')
+      {
+         big.is_negative = true;
+      }
       in.get();
-      big.is_negative = true;
+   }
+
+   if (in.eof())
+   {
+	   in.setstate(std::ios::failbit);
+	   return in;
+   }
+
+   if (!isdigit(in.peek()))
+   {
+      in.seekg(0, std::ios::end);
+      in.setstate(std::ios::failbit);
+      return in;
    }
 
    std::vector<char> buffer;
