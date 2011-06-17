@@ -384,7 +384,7 @@ template<typename num1, typename num2> struct divide
          find_digit<
             typename subtract<
                num1,
-               typename mult<num2, prefix>::type
+               typename extend<typename mult<num2, prefix>::type>::type
             >::type,
             num2
          >::value
