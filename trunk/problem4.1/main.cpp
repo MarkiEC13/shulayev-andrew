@@ -14,7 +14,12 @@ template<int head, typename tail> struct cons
 
 template<int num> struct long_num
 {
-   typedef typename cons<num % 10, typename long_num<num / 10>::type> type;
+   typedef typename cons<
+      num % 10,
+      typename long_num<
+         num / 10
+      >::type
+   > type;
 };
 
 template<> struct long_num<0>
@@ -26,17 +31,38 @@ template<> struct long_num<0>
 
 template<typename num1, typename num2, int carry> struct sum
 {
-   typedef typename cons<(num1::car + num2::car + carry) % 10, typename sum<typename num1::cdr, typename num2::cdr, (num1::car + num2::car + carry) / 10>::type> type;
+   typedef typename cons<
+      (num1::car + num2::car + carry) % 10,
+      typename sum<
+         typename num1::cdr,
+         typename num2::cdr,
+         (num1::car + num2::car + carry) / 10
+      >::type
+   > type;
 };
 
 template<typename num1, int carry> struct sum<num1, nil, carry>
 {
-   typedef typename cons<(num1::car + carry) % 10, typename sum<typename num1::cdr, nil, (num1::car + carry) / 10>::type> type;
+   typedef typename cons<
+      (num1::car + carry) % 10,
+      typename sum<
+         typename num1::cdr,
+         nil,
+         (num1::car + carry) / 10
+      >::type
+   > type;
 };
 
 template<typename num2, int carry> struct sum<nil, num2, carry>
 {
-   typedef typename cons<(num2::car + carry) % 10, typename sum<nil, typename num2::cdr, (num2::car + carry) / 10>::type> type;
+   typedef typename cons<
+      (num2::car + carry) % 10,
+      typename sum<
+         nil,
+         typename num2::cdr,
+         (num2::car + carry) / 10
+      >::type
+   > type;
 };
 
 template<int carry> struct sum<nil, nil, carry>
@@ -209,12 +235,12 @@ template<typename A> struct static_equal<A, A>
 template<typename num> struct strip_zeroes
 {
    typedef typename static_types_if<
-      (static_equal<
+      static_equal<
          typename strip_zeroes<
             typename num::cdr
          >::type,
          nil
-      >::value) && (num::car == 0),
+      >::value && (num::car == 0),
       nil,
       typename cons<
          num::car,
@@ -247,6 +273,52 @@ template<typename num1, typename num2> struct subtract
 };
 
 template<typename num> struct subtract<num, num>
+{
+   typedef nil type;
+};
+
+// long numbers division
+
+template<typename num1, typename num2> struct find_digit
+{
+   static const int value = static_if<
+      compare<num1, num2>::value >= 0,
+      1 + find_digit<
+         typename subtract<num1, num2>::type,
+         num2
+      >::value,
+      0
+   >::value;
+};
+
+template<typename num2> struct find_digit<nil, num2>
+{
+   static const int value = 0;
+};
+
+template<typename num1, typename num2> struct divide
+{
+   typedef typename divide<
+      typename num1::cdr,
+      num2
+   >::type prefix;
+
+   typedef typename sum<
+      typename long_num<
+         find_digit<
+            typename subtract<
+               num1,
+               typename mult<num2, prefix>::type
+            >::type,
+            num2
+         >::value
+      >::type,
+      typename extend<prefix>::type,
+      0
+   >::type type;
+};
+
+template<typename num2> struct divide<nil, num2>
 {
    typedef nil type;
 };
@@ -288,11 +360,14 @@ typedef mult<num2, num1>::type mult3; // 42435
 typedef subtract<mult2, sum2>::type subtr1; // 42335
 typedef subtract<sum2, mult2>::type subtr2;
 
+typedef divide<num2, num1>::type div1;
+
 int main()
 {
    println<mult2>();
    println<new_one>();
    println<subtr1>();
    println<subtr2>();
+   println<div1>();
    return 0;
 }
