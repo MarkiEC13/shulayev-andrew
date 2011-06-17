@@ -67,7 +67,9 @@ template<typename num2, int carry> struct sum<nil, num2, carry>
 
 template<int carry> struct sum<nil, nil, carry>
 {
-   typedef typename long_num<carry>::type type;
+   typedef typename long_num<
+      carry
+   >::type type;
 };
 
 // long numbers multiplication
@@ -75,7 +77,14 @@ template<int carry> struct sum<nil, nil, carry>
 
 template<typename num1, int num2, int carry> struct mult_short
 {
-   typedef typename cons<(num1::car * num2 + carry) % 10, typename mult_short<typename num1::cdr, num2, (num1::car * num2 + carry) / 10>::type> type;
+   typedef typename cons<
+      (num1::car * num2 + carry) % 10,
+      typename mult_short<
+         typename num1::cdr,
+         num2,
+         (num1::car * num2 + carry) / 10
+      >::type
+   > type;
 };
 
 template<typename num1, int carry> struct mult_short<num1, 0, carry>
@@ -85,7 +94,9 @@ template<typename num1, int carry> struct mult_short<num1, 0, carry>
 
 template<int num2, int carry> struct mult_short<nil, num2, carry>
 {
-   typedef typename long_num<carry>::type type;
+   typedef typename long_num<
+      carry
+   >::type type;
 };
 
 template<int carry> struct mult_short<nil, 0, carry>
@@ -109,7 +120,20 @@ template<> struct extend<nil>
 
 template<typename num1, typename num2> struct mult
 {
-   typedef typename sum<typename mult_short<num1, num2::car, 0>::type, typename extend<typename mult<num1, typename num2::cdr>::type>::type, 0>::type type;
+   typedef typename sum<
+      typename mult_short<
+         num1,
+         num2::car,
+         0
+      >::type,
+      typename extend<
+         typename mult<
+            num1,
+            typename num2::cdr
+         >::type
+      >::type,
+      0
+   >::type type;
 };
 
 template<typename num1> struct mult<num1, nil>
@@ -167,7 +191,14 @@ template<int num1, int num2> struct combine_comparison<num1, num2, 0>
 
 template<typename num1, typename num2> struct compare
 {
-   static const int value = combine_comparison<num1::car, num2::car, compare<typename num1::cdr, typename num2::cdr>::value>::value;
+   static const int value = combine_comparison<
+      num1::car,
+      num2::car,
+      compare<
+         typename num1::cdr,
+         typename num2::cdr
+      >::value
+   >::value;
 };
 
 template<typename num1> struct compare<num1, nil>
@@ -203,12 +234,42 @@ template<typename if_clause, typename else_clause> struct static_types_if<false,
 
 template<typename num1, typename num2, int carry> struct subtract_helper
 {
-   typedef typename cons<num1::car - (num2::car + carry) + static_if<num1::car >= (num2::car + carry), 0, 10>::value, typename subtract_helper<typename num1::cdr, typename num2::cdr, static_if<num1::car >= (num2::car + carry), 0, 1>::value>::type> type;
+   typedef typename cons<
+      num1::car - (num2::car + carry) + static_if<
+         num1::car >= (num2::car + carry),
+         0,
+         10
+      >::value,
+      typename subtract_helper<
+         typename num1::cdr,
+         typename num2::cdr,
+         static_if<
+            num1::car >= (num2::car + carry),
+            0,
+            1
+         >::value
+      >::type
+   > type;
 };
 
 template<typename num1, int carry> struct subtract_helper<num1, nil, carry>
 {
-   typedef typename cons<num1::car - carry + static_if<num1::car >= carry, 0, 10>::value, typename subtract_helper<typename num1::cdr, nil, static_if<num1::car >= carry, 0, 1>::value>::type> type;
+   typedef typename cons<
+      num1::car - carry + static_if<
+         num1::car >= carry,
+         0,
+         10
+      >::value,
+      typename subtract_helper<
+         typename num1::cdr,
+         nil,
+         static_if<
+            num1::car >= carry,
+            0,
+            1
+         >::value
+      >::type
+   > type;
 };
 
 template<int carry> struct subtract_helper<nil, nil, carry>
@@ -258,7 +319,13 @@ template<> struct strip_zeroes<nil>
 
 template<typename delayed> struct get_result
 {
-   typedef typename strip_zeroes<typename subtract_helper<typename delayed::num1, typename delayed::num2, 0>::type>::type type;
+   typedef typename strip_zeroes<
+      typename subtract_helper<
+         typename delayed::num1,
+         typename delayed::num2,
+         0
+      >::type
+   >::type type;
 };
 
 template<> struct get_result<nil>
@@ -269,7 +336,16 @@ template<> struct get_result<nil>
 // we consider there are no numbers except N U {0}
 template<typename num1, typename num2> struct subtract
 {
-   typedef typename get_result<typename static_types_if<(compare<num1, num2>::value > 0), typename lazy_subtraction<num1, num2>, nil>::type>::type type;
+   typedef typename get_result<
+      typename static_types_if<
+         (compare<num1, num2>::value > 0),
+         typename lazy_subtraction<
+            num1,
+            num2
+         >,
+         nil
+      >::type
+   >::type type;
 };
 
 template<typename num> struct subtract<num, num>
@@ -361,6 +437,7 @@ typedef subtract<mult2, sum2>::type subtr1; // 42335
 typedef subtract<sum2, mult2>::type subtr2;
 
 typedef divide<num2, num1>::type div1;
+typedef divide<long_num<100>::type, long_num<25>::type>::type div2;
 
 int main()
 {
@@ -369,5 +446,6 @@ int main()
    println<subtr1>();
    println<subtr2>();
    println<div1>();
+   println<div2>();
    return 0;
 }
