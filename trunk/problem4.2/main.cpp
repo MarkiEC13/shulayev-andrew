@@ -42,7 +42,11 @@ template<typename list> struct split<list, true>
 template<typename left, typename right, bool first> struct merge_helper;
 template<typename left, typename right> struct merge
 {
-   typedef typename merge_helper<left, right, left::car < right::car>::list list;
+   typedef typename merge_helper<
+      left,
+      right,
+      (left::car) < (right::car)
+   >::list list;
 };
 
 template<typename left> struct merge<left, nil>
