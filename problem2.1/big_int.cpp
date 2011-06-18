@@ -2,12 +2,6 @@
 
 // containers
 
-big_int::big_int()
-{
-   is_negative = false;
-   digits.push_back(0);
-}
-
 big_int::big_int(int64 data)
 {
    is_negative = (data < 0ll);
@@ -25,28 +19,11 @@ big_int::big_int(int64 data)
    }
 }
 
-big_int::big_int(int small_data)
-{
-   is_negative = (small_data < 0);
-   int64 data = abs(int64(small_data));
-
-   while (data > 0)
-   {
-      digits.push_back(data % BASE);
-      data /= BASE;
-   }
-
-   if (digits.size() == 0)
-   {
-      digits.push_back(0);
-   }
-}
-
 // input/output routines
 
 std::istream& operator>>(std::istream& in, big_int& big)
 {
-   while (!in.eof() && isspace(in.peek()))
+   while (isspace(in.peek()))
    {
       in.get();
    }
@@ -67,21 +44,14 @@ std::istream& operator>>(std::istream& in, big_int& big)
       in.get();
    }
 
-   if (in.eof())
+   if (in.eof() || !isdigit(in.peek()))
    {
 	   in.setstate(std::ios::failbit);
 	   return in;
    }
 
-   if (!isdigit(in.peek()))
-   {
-      in.seekg(0, std::ios::end);
-      in.setstate(std::ios::failbit);
-      return in;
-   }
-
    std::vector<char> buffer;
-   while ('0' <= in.peek() && in.peek() <= '9')
+   while (isdigit(in.peek()));
    {
       if (in.peek() != '0' || !buffer.empty())
       {
