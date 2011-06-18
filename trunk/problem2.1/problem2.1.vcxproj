@@ -37,10 +37,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\boost\boost_1_46_1;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\boost\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files\boost\boost_1_46_1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="big_int.cpp" />
+    <ClCompile Include="big_int_test.cpp" />
     <ClCompile Include="container_t.cpp" />
   </ItemGroup>
   <ItemGroup>

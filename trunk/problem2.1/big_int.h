@@ -8,17 +8,18 @@
 
 #include "container_t.h"
 
-typedef long long int64;
+namespace
+{
+   typedef long long int64;
 
-const int LOG10_BASE = 9;
-const int BASE = 1000000000;
+   const int LOG10_BASE = 9;
+   const int BASE = 1000000000;
+}
 
 class big_int
 {
 public:
-   big_int();
-   big_int(int);
-   big_int(int64);
+   big_int(int64 data = 0);
    friend std::istream& operator>>(std::istream&, big_int&);
    friend std::ostream& operator<<(std::ostream&, const big_int&);
 

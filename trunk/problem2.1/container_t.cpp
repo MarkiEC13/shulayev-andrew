@@ -29,15 +29,15 @@ container_t::container_t(const container_t& other)
 
 // methods
 
-void container_t::ensure_capacity(size_t size)
+void container_t::ensure_capacity(size_t request_size)
 {
-   if (size <= capacity)
+   if (request_size <= capacity)
    {
       return;
    }
 
    size_t new_capacity = capacity;
-   while (size > new_capacity)
+   while (request_size > new_capacity)
    {
       new_capacity *= 2;
    }
@@ -154,8 +154,9 @@ size_t container_t::size() const
    return length;
 }
 
-void container_t::shrink(size_t size)
+void container_t::shrink(size_t request_size)
 {
-   assert(size <= length);
-   length = size;
+   assert(request_size <= length);
+
+   length = request_size;
 }

@@ -22,23 +22,27 @@ template<> struct split<nil, false>
 
 template<typename list> struct split<list, false>
 {
-   typedef typename cons<list::car, typename split<typename list::cdr, true>::type> type;
+   typedef typename cons<
+      list::car,
+      typename split<
+         typename list::cdr,
+         true
+      >::type
+   > type;
 };
 
 template<typename list> struct split<list, true>
 {
-   typedef typename split<typename list::cdr, false>::type type;
-};
-
-template<int a, int b> struct less_than
-{
-   static const bool value = a < b;
+   typedef typename split<
+      typename list::cdr,
+      false
+   >::type type;
 };
 
 template<typename left, typename right, bool first> struct merge_helper;
 template<typename left, typename right> struct merge
 {
-   typedef typename merge_helper<left, right, less_than<left::car, right::car>::value>::list list;
+   typedef typename merge_helper<left, right, left::car < right::car>::list list;
 };
 
 template<typename left> struct merge<left, nil>
@@ -55,17 +59,42 @@ template<typename left, typename right, bool first> struct merge_helper;
 
 template<typename left, typename right> struct merge_helper<left, right, true>
 {
-   typedef typename cons<left::car, typename merge<typename left::cdr, right>::list> list;
+   typedef typename cons<
+      left::car,
+      typename merge<
+         typename left::cdr,
+         right
+      >::list
+   > list;
 };
 
 template<typename left, typename right> struct merge_helper<left, right, false>
 {
-   typedef typename cons<right::car, typename merge<left, typename right::cdr>::list> list;
+   typedef typename cons<
+      right::car,
+      typename merge<
+         left,
+         typename right::cdr
+      >::list
+   > list;
 };
 
 template<typename list> struct sort
 {
-   typedef typename merge<typename sort<typename split<list, false>::type>::list, typename sort<typename split<list, true>::type>::list>::list list;
+   typedef typename merge<
+      typename sort<
+         typename split<
+            list,
+            false
+         >::type
+      >::list,
+      typename sort<
+         typename split<
+            list,
+            true
+         >::type
+      >::list
+   >::list list;
 };
 
 template<> struct sort<nil>
