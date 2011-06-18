@@ -3,8 +3,8 @@
 // containers
 
 big_int::big_int(int64 data)
+   : is_negative(data < 0ll)
 {
-   is_negative = (data < 0ll);
    data = abs(data);
 
    while (data > 0)
@@ -51,7 +51,7 @@ std::istream& operator>>(std::istream& in, big_int& big)
    }
 
    std::vector<char> buffer;
-   while (isdigit(in.peek()));
+   while (isdigit(in.peek()))
    {
       if (in.peek() != '0' || !buffer.empty())
       {
@@ -113,10 +113,16 @@ std::ostream& operator<<(std::ostream& out, const big_int& big)
    
    out << big.digits[big.digits.size() - 1];
 
+   std::streamsize old_width = out.width();
+   char old_fill = out.fill();
+
    for (int i = big.digits.size() - 2; i >= 0; i--)
    {
       out << std::setw(LOG10_BASE) << std::setfill('0') << big.digits[i];
    }
+
+   out.width(old_width);
+   out.fill(old_fill);
 
    return out;
 }
