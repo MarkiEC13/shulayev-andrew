@@ -76,7 +76,10 @@ std::istream& operator>>(std::istream& in, big_int& big)
 
       size_t badness = buffer.size() % LOG10_BASE;
       int size = buffer.size() / LOG10_BASE + 1;
-      if (badness == 0) size--;
+      if (badness == 0)
+      {
+         size--;
+      }
 
       new_digits.ensure_capacity(size);
 
@@ -295,7 +298,10 @@ big_int big_int::operator+(const big_int& other) const
 
 big_int& big_int::operator-=(const big_int& other)
 {
-   if (other.is_zero()) return *this;
+   if (other.is_zero())
+   {
+      return *this;
+   }
 
    if (is_negative != other.is_negative)
    {
@@ -447,7 +453,10 @@ void big_int::inplace_subtract(const big_int& other, size_t shift = 0)
 
 big_int big_int::operator*(int mult) const
 {
-   if (mult == 0) return big_int(0);
+   if (mult == 0)
+   {
+      return big_int(0);
+   }
 
    big_int result = *this;
 
@@ -565,5 +574,8 @@ void big_int::normalize()
    }
    digits.shrink(new_length);
 
-   if (is_zero()) is_negative = false;
+   if (is_zero())
+   {
+      is_negative = false;
+   }
 }
