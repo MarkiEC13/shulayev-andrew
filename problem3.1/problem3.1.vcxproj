@@ -63,12 +63,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="big_int.cpp" />
+    <ClCompile Include="calculator.cpp" />
     <ClCompile Include="container_t.cpp" />
+    <ClCompile Include="func_factory.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="big_int.h" />
+    <ClInclude Include="calculator.h" />
     <ClInclude Include="container_t.h" />
+    <ClInclude Include="func_factory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
