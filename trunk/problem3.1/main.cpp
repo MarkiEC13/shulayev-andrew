@@ -72,11 +72,11 @@ namespace calc
          using qi::_val;
 
          start  %= expr > qi::eoi;
-			expr    = term[_val = _1] >> *(('+' >> term)[_val += _1] | ('-' >> term)[_val -= _1]);
-			term    = fact[_val = _1] >> *(('*' >> fact)[_val *= _1] | ('/' >> fact)[_val /= _1]);
-			fact    = power[_val = _1] >> -('^' >> fact[_val = binary_pow(_val, _1)]);
+         expr    = term[_val = _1] >> *(('+' >> term)[_val += _1] | ('-' >> term)[_val -= _1]);
+         term    = fact[_val = _1] >> *(('*' >> fact)[_val *= _1] | ('/' >> fact)[_val /= _1]);
+         fact    = power[_val = _1] >> -('^' >> fact[_val = binary_pow(_val, _1)]);
          power  %= number;
-			number %= digits[_val = get_number(_1)] | ('-' >> number[_val = -_1]);
+         number %= digits[_val = get_number(_1)] | ('-' >> number[_val = -_1]);
          digits  = +(ascii::digit);
       }
    };
@@ -86,16 +86,16 @@ int main()
 {
    using boost::spirit::ascii::space;
 
-	typedef std::string::const_iterator iter_t;
-	typedef calc::calculator<iter_t> calculator;
+   typedef std::string::const_iterator iter_t;
+   typedef calc::calculator<iter_t> calculator;
 
-	calculator g;
-	std::string s;
+   calculator g;
+   std::string s;
 
-	while (std::cout << "> ", std::getline(std::cin, s), !s.empty())
+   while (std::cout << "> ", std::getline(std::cin, s), !s.empty())
    {
-		big_int ret;
-		iter_t begin = s.begin(), end = s.end();
+      big_int ret;
+      iter_t begin = s.begin(), end = s.end();
 
       try
       {
@@ -106,7 +106,7 @@ int main()
       {
          std::cout << "<ERROR>\n";
       }
-	}
+   }
 
    return 0;
 }
