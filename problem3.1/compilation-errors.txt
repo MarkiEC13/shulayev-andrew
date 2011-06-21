@@ -1,0 +1,4 @@
+c1xx : fatal error C1083: Cannot open source file: 'calculator.cpp': No such file or directory [X:\evaluator\export\problem3.1\problem3.1.vcxproj]
+
+[Generated at June 21, 2011 9:32:21 AM GMT+03:00]
+
