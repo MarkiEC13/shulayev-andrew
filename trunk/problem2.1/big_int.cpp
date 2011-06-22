@@ -30,8 +30,8 @@ std::istream& operator>>(std::istream& in, big_int& big)
 
    if (in.eof())
    {
-	   in.setstate(std::ios::failbit);
-	   return in;
+      in.setstate(std::ios::failbit);
+      return in;
    }
 
    big.is_negative = false;
@@ -46,8 +46,8 @@ std::istream& operator>>(std::istream& in, big_int& big)
 
    if (in.eof() || !isdigit(in.peek()))
    {
-	   in.setstate(std::ios::failbit);
-	   return in;
+      in.setstate(std::ios::failbit);
+      return in;
    }
 
    std::vector<char> buffer;
