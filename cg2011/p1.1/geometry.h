@@ -20,7 +20,7 @@ std::istream& operator>>(std::istream&, point&);
 
 struct segment
 {
-	point end[2];
+	point a, b;
 	segment();
 	segment(point, point);
 	segment(RandomInput&);
