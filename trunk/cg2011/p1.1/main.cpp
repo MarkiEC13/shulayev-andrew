@@ -15,6 +15,8 @@ int main()
 		for (int i = 0; i < n; i++, p *= 239)
 		{
 			std::cin >> seg1 >> seg2;
+			if (segments_intersect(seg1, seg2))
+				result += p;
 		}
 	}
 	else
@@ -27,6 +29,9 @@ int main()
 		{
 			segment seg1(rand);
 			segment seg2(rand);
+			
+			if (segments_intersect(seg1, seg2))
+				result += p;
 		}
 	}
 	
