@@ -7,11 +7,13 @@ point::point(RandomInput& rand) : x(rand.get_double()), y(rand.get_double()) { }
 std::istream& operator>>(std::istream& in, point& p)
 {
 	in >> p.x >> p.y;
+	return in;
 }
 
 std::ostream& operator<<(std::ostream& out, point const& p)
 {
 	out << '(' << p.x << "; " << p.y << ')';
+	return out;
 }
 
 segment::segment() { }
@@ -24,11 +26,13 @@ segment::segment(RandomInput& rand)
 std::istream& operator>>(std::istream& in, segment& s)
 {
 	in >> s.a >> s.b;
+	return in;
 }
 
 std::ostream& operator<<(std::ostream& out, segment const& s)
 {
 	out << '(' << s.a << ", " << s.b << ')';
+	return out;
 }
 
 inline boost::numeric::interval<double> make_interval(double start, double end)
