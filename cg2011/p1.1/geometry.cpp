@@ -86,7 +86,7 @@ int left_turn(segment const& segm, point const& p)
 
 int left_turn_simple(segment const& segm, point const& p)
 {
-	double eps = 8 * std::numeric_limits<double>::epsilon() *
+	double eps = 4 * std::numeric_limits<double>::epsilon() *
 		(std::abs((segm.b.x - segm.a.x) * (p.y - segm.a.y)) + std::abs((segm.b.y - segm.a.y) * (p.x - segm.a.x)));
 	
 	double vec_prod = (segm.b.x - segm.a.x) * (p.y - segm.a.y) - (segm.b.y - segm.a.y) * (p.x - segm.a.x);
@@ -132,9 +132,9 @@ namespace adaptive_details
 	void split(double a, size_t s, double& hi, double& lo)
 	{
 		double c = ((1LL << s) + 1LL) * a;
-		double ab = c - a ;
-		hi = c - ab ;
-		lo = a - hi ;
+		double ab = c - a;
+		hi = c - ab;
+		lo = a - hi;
 	}
 
 	double mul(double a, double b, double& roundoff)
