@@ -21,7 +21,7 @@ namespace geometry
 	class Segment
 	{
 	public:
-		Segment(const geometry::Point &, const geometry::Point &);
+		Segment(const Point &, const Point &);
 		Segment(io::Input &);
 		Point get_end(int) const;
 		bool does_intersect(const Segment &) const;
@@ -29,6 +29,9 @@ namespace geometry
 	private:
 		Point ends[2];
 	};
+
+	int left_turn(const Segment &, const Point &);
+	int left_turn(const Point &, const Point &, const Point &);
 };
 
 #endif // GEOMETRY_H
