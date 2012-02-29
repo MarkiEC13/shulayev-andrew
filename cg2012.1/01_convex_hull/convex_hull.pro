@@ -3,6 +3,7 @@ SOURCES += main.cpp \
     shared/geometry.cpp
 OTHER_FILES += CMakeLists.txt \
     test1.txt \
-    test2.txt
+    test2.txt \
+    test3.txt
 HEADERS += shared/io.h \
     shared/geometry.h
