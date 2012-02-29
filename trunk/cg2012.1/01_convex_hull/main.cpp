@@ -5,6 +5,7 @@
 #include <vector>
 #include <cassert>
 #include <stack>
+#include <fstream>
 
 #include "shared/io.h"
 #include "shared/geometry.h"
@@ -46,7 +47,19 @@ int main()
 	io::StreamInput in(std::cin);
 	int count = in.get_int();
 
-	assert(count >= 3);
+	if (count < 3)
+	{
+		std::cout << count << '\n';
+		for (int i = 0; i < count; ++i)
+		{
+			if (i > 0)
+			{
+				std::cout << ' ';
+			}
+			std::cout << (i + 1);
+		}
+		std::cout << '\n';
+	}
 
 	std::vector<std::pair<geometry::Point, int> > points(count);
 	int selected = 0;
@@ -92,20 +105,18 @@ int main()
 	stack.push_back(comparator::start);
 	stack.push_back(filtered_points[0]);
 	stack.push_back(filtered_points[1]);
-	int size = 3;
 	for (size_t i = 2; i < filtered_points.size(); ++i)
 	{
-		while (size > 2 && geometry::left_turn(stack[size - 2].first, stack[size - 1].first, filtered_points[i].first) != 1)
+		while (stack.size() > 2 && geometry::left_turn(stack[stack.size() - 2].first, stack[stack.size() - 1].first, filtered_points[i].first) < 0)
 		{
 			stack.pop_back();
-			--size;
 		}
 		stack.push_back(filtered_points[i]);
 	}
 
 	std::cout << stack.size() << '\n';
 	for (size_t i = 0; i < stack.size(); ++i)
-	{
+	{		
 		if (i > 0)
 		{
 			std::cout << ' ';
