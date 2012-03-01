@@ -77,23 +77,21 @@ int main()
 		return 0;
 	}
 
-	std::vector<geometry::Point> stack;
-	stack.push_back(points[0]);
-	stack.push_back(points[1]);
-	stack.push_back(points[2]);
+	size_t stack_size = 3;
 	for (size_t i = 3; i < points.size(); ++i)
 	{
-		while (stack.size() > 2 && geometry::left_turn(stack[stack.size() - 2], stack[stack.size() - 1], points[i]) != 1)
+		while (stack_size > 2 && geometry::left_turn(points[stack_size - 2], points[stack_size - 1], points[i]) != 1)
 		{
-			stack.pop_back();
+			--stack_size;
 		}
-		stack.push_back(points[i]);
+		std::swap(points[stack_size], points[i]);
+		++stack_size;
 	}
 
-	std::cout << stack.size() << '\n';
-	for (size_t i = 0; i < stack.size(); ++i)
+	std::cout << stack_size << '\n';
+	for (size_t i = 0; i < stack_size; ++i)
 	{		
-		std::cout << stack[i].get_x() << ' ' << stack[i].get_y() << '\n';
+		std::cout << points[i].get_x() << ' ' << points[i].get_y() << '\n';
 	}
 
 	return 0;
