@@ -1,6 +1,8 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
+#include <vector>
+
 #include "io.h"
 
 namespace geometry
@@ -32,6 +34,7 @@ namespace geometry
 
 	int left_turn(const Segment &, const Point &);
 	int left_turn(const Point &, const Point &, const Point &);
+	size_t convex_hull(std::vector<Point>&);
 };
 
 #endif // GEOMETRY_H

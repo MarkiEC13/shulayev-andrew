@@ -1,11 +1,10 @@
 #include <cassert>
 #include <limits>
 #include <cmath>
+#include <vector>
 #include <boost/numeric/interval.hpp>
 
 #include "geometry.h"
-
-// Point implementation starts
 
 geometry::Point::Point() : x(0.0), y(0.0)
 { }
@@ -28,10 +27,6 @@ double geometry::Point::get_y() const
 {
 	return y;
 }
-
-// Point implementation ends
-
-// Segment implementation starts
 
 geometry::Segment::Segment(const geometry::Point & end0, const geometry::Point & end1)
 {
@@ -57,7 +52,7 @@ bool geometry::Segment::does_intersect(const geometry::Segment &) const
 	return false;
 }
 
-namespace
+namespace left_turn_details
 {
 	int left_turn_simple(geometry::Point const& a, geometry::Point const& b, geometry::Point const& c)
 	{
@@ -199,19 +194,19 @@ namespace
 
 int geometry::left_turn(const Point & p1, const Point & p2, const Point & p3)
 {
-	int result = left_turn_simple(p1, p2, p3);
+	int result = left_turn_details::left_turn_simple(p1, p2, p3);
 	if (result != 0)
 	{
 		return result;
 	}
 
-	result = left_turn_interval(p1, p2, p3);
+	result = left_turn_details::left_turn_interval(p1, p2, p3);
 	if (result != 0)
 	{
 		return result;
 	}
 
-	return left_turn_interval(p1, p2, p3);
+	return left_turn_details::left_turn_adaptive(p1, p2, p3);
 }
 
 int geometry::left_turn(geometry::Segment const& segm, geometry::Point const& p)
@@ -219,4 +214,82 @@ int geometry::left_turn(geometry::Segment const& segm, geometry::Point const& p)
 	return geometry::left_turn(segm.get_end(0), segm.get_end(1), p);
 }
 
-// Segment implementation ends
+namespace convex_hull_details
+{
+	struct comparator
+	{
+		geometry::Point * start;
+
+		comparator(geometry::Point * start) : start(start)
+		{ }
+
+		int get_turn(const geometry::Point & p1, const geometry::Point & p2)
+		{
+			return geometry::left_turn(*start, p1, p2);
+		}
+
+		bool operator()(const geometry::Point & p1, const geometry::Point & p2)
+		{
+			int turn = get_turn(p1, p2);
+			if (turn == 0)
+			{
+				if (p1.get_y() == p2.get_y())
+				{
+					return fabs(start->get_x() - p1.get_x()) < fabs(start->get_x() - p2.get_x());
+				}
+				else
+				{
+					return p1.get_y() < p2.get_y();
+				}
+			}
+			else
+			{
+				return turn == 1;
+			}
+		}
+	};
+
+	inline bool is_lower(const geometry::Point & p1, const geometry::Point & p2)
+	{
+		return p1.get_y() > p2.get_y() || (p1.get_y() == p2.get_y() && p1.get_x() > p2.get_x());
+	}
+};
+
+size_t geometry::convex_hull(std::vector<Point>& points)
+{
+	size_t count = points.size();
+	int selected = 0;
+	for (size_t i = 0; i < count; ++i)
+	{
+		if (i == 0 || convex_hull_details::is_lower(points[selected], points[i]))
+		{
+			selected = i;
+		}
+	}
+
+	std::swap(points[selected], points[0]);
+	std::sort(points.begin() + 1, points.end(), convex_hull_details::comparator(&points[0]));
+
+	if (points.size() < 3)
+	{
+		std::cout << points.size() << '\n';
+		for (size_t i = 0; i < points.size(); ++i)
+		{
+			std::cout << points[i].get_x() << ' ' << points[i].get_y() << '\n';
+		}
+		return 0;
+	}
+
+	size_t stack_size = 3;
+	for (size_t i = 3; i < points.size(); ++i)
+	{
+		while (stack_size > 2 && geometry::left_turn(points[stack_size - 2], points[stack_size - 1], points[i]) != 1)
+		{
+			--stack_size;
+		}
+		std::swap(points[stack_size], points[i]);
+		++stack_size;
+	}
+
+	return stack_size;
+}
